@@ -31,9 +31,126 @@ import time
 #########################################################
 #                   Your Code Goes Below                #
 #########################################################
+def drawSquare(darty, width,top_left_x, top_left_y):
+  darty.up()
+  darty.goto(top_left_x, top_left_y)
+  darty.down()
+  for i in range(4):
+    darty.forward(width)
+    darty.right(90)
+"""
+This function draws a square
+darty(object)the object drawing the square
+width(integer)the size of the squaee
+top_left_x(integer)the x coordinate of the top left corner
+top_left_y(integer)the y coordinate of the top left corner
+"""
 
+def drawLine(darty, x_start, y_start, x_end, y_end):
+  darty.up()
+  darty.goto(x_start, y_start)
+  darty.down()
+  darty.goto(x_end, y_end)
+"""
+The function draws a straight line
+darty(object)the object that draws the line
+x_start(integer)the x coordinate where the line starts
+y_start(integer)the y coordinate where the line starts
+x_end(integer)the x coordinate where the line ends
+y_end(integer)the y coordinate where the line ends
+"""
 
+def drawCircle(darty, radius):
+  darty.up()
+  darty.goto(0,-radius)
+  darty.down()
+  darty.circle(radius,steps=360) 
+"""
+the function draws a circle
+darty(object)the object drawing the circle
+radius(integer)the radius of the cirdle
+"""
 
+def setUpDartboard(window, darty):
+  window.setworldcoordinates(-2, -2, 2, 2)
+  drawSquare(darty, 2, -1, 1)
+  drawLine(darty,-1,0,1,0)
+  drawLine(darty,0, -1, 0, 1)
+  drawCircle(darty,-1)
+"""
+the function draws a dartboard by calling the previous functions
+window(object)the screen that the dartboard is on
+darty(object)the object the draws the dartboard
+"""
+
+def throwDart(darty):
+  x_coordinate=random.uniform(-1,1)
+  y_coordinate=random.uniform(-1,1)
+  darty.up()
+  darty.goto(x_coordinate, y_coordinate)
+  if darty.distance(0,0)<1:
+    darty.color("green")
+  elif darty.distance(0,0)>1:
+    darty.color('red')
+  darty.dot()
+  darty.color("black")
+"""
+the function throws virtual darts at the dartborad and colors the dots based on where they hit
+darty(object)the object that is used to make the dots where the darts hit
+"""
+
+def isInCircle(darty):
+  if darty.distance(0,0)<1:
+    return True
+  elif darty.distance(0,0)>1:
+    return False 
+"""
+The function returns a statment based on a conditional
+darty(object)makes the dots on the dartboard
+True(statement)given if the darts are in the circle
+False(statement)given if the the darts are out of the circle
+"""
+
+def playDarts(darty):
+  player1_points = 0
+  player2_points = 0
+  player1=throwDart
+  player2=throwDart
+  for i  in range(10):
+    player1(darty)
+    if isInCircle(darty):
+      player1_points += 1
+    player2(darty)
+    if isInCircle(darty):
+      player2_points += 1
+    print("player 1 score: " + str(player1_points))
+    print("player 2 score: " + str(player2_points))
+  if player1_points > player2_points:
+    print("player 1 wins")
+  elif player1_points < player2_points:
+    print("player 2 wins")
+  elif player1_points == player2_points:
+    print("tie")
+"""
+simulates a dart game between two players and keeps track of each ones score
+darty(object)makes the dots simulating the visual darts
+"""
+    
+def montePi(darty,number_darts):
+  pi_estimation=0
+  pi=throwDart
+  for i in range(number_darts):
+    pi(darty)
+    if isInCircle(darty):
+      pi_estimation += 1
+  return pi_estimation/number_darts*4
+"""
+the function estimates the value of pi by caluclating the ratio of amount of darts in the circle to total darts thrown
+darty(object)makes the dots that simulate as darts
+number_darts(integr)the number of darts being thrown
+pi_estimation/number_darts*4(float)the approximation of pi
+"""
+    
 #########################################################
 #         Do not alter any code below here              #
 #       Your code must work with the main proivided     #
